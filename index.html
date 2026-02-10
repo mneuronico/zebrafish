@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multisensory Integration in Zebrafish | PhD Thesis - Nicolas Martorell</title>
+    <meta name="description" content="Interactive exploration of how zebrafish brains combine sight and sound to survive. PhD thesis by Nicolas Martorell, Universidad de Buenos Aires.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Background particle canvas -->
+    <canvas id="particles-bg"></canvas>
+
+    <!-- Progress bar -->
+    <div id="progress-bar"><div id="progress-fill"></div></div>
+
+    <!-- Language toggle -->
+    <button id="lang-toggle" aria-label="Toggle language">
+        <span class="lang-label" id="lang-label">ES</span>
+    </button>
+
+    <!-- ===== HERO ===== -->
+    <section id="hero" class="section">
+        <div class="hero-content">
+            <div class="hero-badge" data-i18n="heroBadge">PhD Thesis</div>
+            <h1 class="hero-title">
+                <span class="hero-line" data-i18n="heroLine1">How do tiny fish</span>
+                <span class="hero-line glow" data-i18n="heroLine2">decode danger</span>
+                <span class="hero-line" data-i18n="heroLine3">using multiple senses?</span>
+            </h1>
+            <p class="hero-subtitle" data-i18n="heroSub">An interactive journey through multisensory integration in the zebrafish brain</p>
+            <p class="hero-author">Nicolas Martorell &middot; Universidad de Buenos Aires &middot; 2025</p>
+            <div class="scroll-prompt">
+                <div class="scroll-icon"></div>
+                <span data-i18n="scrollPrompt">Scroll to explore</span>
+            </div>
+        </div>
+        <!-- Animated zebrafish SVG in hero -->
+        <svg id="hero-fish" viewBox="0 0 200 60" class="hero-fish-svg">
+            <g class="fish-group">
+                <path class="fish-body" d="M30,30 Q50,8 90,12 Q130,5 160,25 L170,20 Q175,30 170,40 L160,35 Q130,55 90,48 Q50,52 30,30Z" fill="none" stroke="var(--gfp)" stroke-width="1.5" opacity="0.3"/>
+                <circle class="fish-eye" cx="55" cy="27" r="3" fill="var(--gfp)" opacity="0.4"/>
+            </g>
+        </svg>
+    </section>
+
+    <!-- ===== THE QUESTION ===== -->
+    <section id="the-question" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec1Label">01 / The Challenge</div>
+            <h2 data-i18n="sec1Title">Life-or-death decisions in milliseconds</h2>
+            <p class="section-text" data-i18n="sec1Text1">Imagine you are a tiny fish larva, just 4 millimeters long. A shadow grows above you -- something is diving toward you. At the same time, you feel a shockwave rip through the water. You have less than 10 milliseconds to decide: flee or freeze?</p>
+            <p class="section-text" data-i18n="sec1Text2">Animals constantly face these decisions. Their survival depends on combining information from different senses -- sight, hearing, touch -- to build a complete picture of the threat. This process is called <strong>multisensory integration</strong>.</p>
+
+            <!-- Looming interactive -->
+            <div class="interactive-box">
+                <div class="interactive-label" data-i18n="sec1GameLabel">Try to escape the looming predator!</div>
+                <div id="looming-game" class="game-container">
+                    <canvas id="looming-canvas"></canvas>
+                    <div id="looming-instructions" data-i18n="sec1GameInstr">Click anywhere before the shadow fills the screen</div>
+                    <button id="looming-start" class="btn-glow" data-i18n="sec1GameStart">Start</button>
+                    <div id="looming-result" class="game-result"></div>
+                </div>
+                <p class="interactive-caption" data-i18n="sec1GameCaption">This expanding dark circle is a "looming stimulus" -- it simulates a predator diving toward a fish. In this thesis, these stimuli were used to trigger escape responses in zebrafish larvae.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MEET THE ZEBRAFISH ===== -->
+    <section id="meet-zebrafish" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec2Label">02 / The Model</div>
+            <h2 data-i18n="sec2Title">Meet the zebrafish</h2>
+            <p class="section-text" data-i18n="sec2Text1">The zebrafish (Danio rerio) is one of neuroscience's most powerful model organisms. These small freshwater fish from South Asia have a remarkable advantage: their larvae are completely transparent.</p>
+            <p class="section-text" data-i18n="sec2Text2">This transparency, combined with genetically encoded fluorescent proteins (GFP) that glow green when neurons fire, allows scientists to watch the entire brain think in real time -- something impossible in almost any other vertebrate.</p>
+            
+            <!-- Interactive transparent fish -->
+            <div class="interactive-box">
+                <div class="interactive-label" data-i18n="sec2InterLabel">Click the fish to reveal its brain</div>
+                <div id="fish-reveal" class="fish-reveal-container">
+                    <canvas id="fish-canvas"></canvas>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon" id="icon-transparent"></div>
+                    <h3 data-i18n="sec2Feat1T">Transparent</h3>
+                    <p data-i18n="sec2Feat1D">Larvae are see-through, enabling live brain imaging without surgery</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon" id="icon-fluorescent"></div>
+                    <h3 data-i18n="sec2Feat2T">Fluorescent neurons</h3>
+                    <p data-i18n="sec2Feat2D">GCaMP6f proteins glow green when neurons fire, acting as a real-time activity sensor</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon" id="icon-fast"></div>
+                    <h3 data-i18n="sec2Feat3T">Lightning-fast escapes</h3>
+                    <p data-i18n="sec2Feat3D">Escape responses begin in under 5 ms, among the fastest in the animal kingdom</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon" id="icon-genome"></div>
+                    <h3 data-i18n="sec2Feat4T">70% shared genes</h3>
+                    <p data-i18n="sec2Feat4D">Zebrafish share ~70% of their genes with humans, making findings broadly relevant</p>
+                </div>
+            </div>
+
+            <figure class="thesis-figure">
+                <img src="figuras/Figura 02.png" alt="Zebrafish model advantages and lifecycle" loading="lazy">
+                <figcaption data-i18n="sec2FigCap">Advantages of the zebrafish model and its lifecycle. Adapted from Garg & Geurten, 2024 and D'Costa & Shepherd, 2009.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ===== THE BRAIN ===== -->
+    <section id="the-brain" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec3Label">03 / The Brain</div>
+            <h2 data-i18n="sec3Title">A tiny brain with big answers</h2>
+            <p class="section-text" data-i18n="sec3Text1">The zebrafish brain is only about 500 micrometers long, yet it contains all the fundamental regions found in human brains. One structure particularly fascinated us: the <strong>Tectum</strong>.</p>
+            <p class="section-text" data-i18n="sec3Text2">The Tectum (called Superior Colliculus in mammals) was historically considered a purely visual processing center. It receives direct input from the eyes and creates a map of the visual world. But we suspected it might do much more.</p>
+
+            <!-- Interactive brain explorer -->
+            <div class="interactive-box">
+                <div class="interactive-label" data-i18n="sec3InterLabel">Hover over the brain regions to explore</div>
+                <div id="brain-explorer" class="brain-container">
+                    <svg id="brain-svg" viewBox="0 0 600 280">
+                        <!-- Zebrafish brain top-down view -->
+                        <defs>
+                            <filter id="glow-filter">
+                                <feGaussianBlur stdDeviation="4" result="blur"/>
+                                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Telencephalon -->
+                        <ellipse class="brain-region" data-region="telencephalon" cx="130" cy="140" rx="55" ry="42" />
+                        <!-- Tectum left -->
+                        <ellipse class="brain-region tectum" data-region="tectum" cx="300" cy="100" rx="70" ry="50" />
+                        <!-- Tectum right -->
+                        <ellipse class="brain-region tectum" data-region="tectum" cx="300" cy="180" rx="70" ry="50" />
+                        <!-- Cerebellum -->
+                        <ellipse class="brain-region" data-region="cerebellum" cx="410" cy="140" rx="35" ry="35" />
+                        <!-- Hindbrain -->
+                        <ellipse class="brain-region" data-region="hindbrain" cx="510" cy="140" rx="60" ry="45" />
+                        <!-- Eyes -->
+                        <ellipse class="brain-eye" cx="170" cy="60" rx="40" ry="28" />
+                        <ellipse class="brain-eye" cx="170" cy="220" rx="40" ry="28" />
+                        <!-- Labels -->
+                        <text class="brain-label" x="130" y="145" data-i18n-attr="textContent" data-i18n="brainTel">Telencephalon</text>
+                        <text class="brain-label" x="300" y="145" data-i18n="brainTec">Tectum</text>
+                        <text class="brain-label" x="410" y="145" data-i18n="brainCer">Cerebellum</text>
+                        <text class="brain-label" x="510" y="145" data-i18n="brainHind">Hindbrain</text>
+                        <text class="brain-label eye-label" x="170" y="63">Eyes</text>
+                        <text class="brain-label eye-label" x="170" y="223">Eyes</text>
+                        <!-- Direction arrow -->
+                        <text class="brain-direction" x="50" y="28" data-i18n="brainFront">Front</text>
+                        <line x1="80" y1="30" x2="80" y2="250" stroke="var(--gfp-dim)" stroke-width="1" stroke-dasharray="4"/>
+                        <text class="brain-direction" x="560" y="28" data-i18n="brainBack">Back</text>
+                    </svg>
+                    <div id="brain-info" class="brain-info-panel">
+                        <h4 id="brain-info-title"></h4>
+                        <p id="brain-info-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== THE DISCOVERY ===== -->
+    <section id="discovery" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec4Label">04 / The Discovery</div>
+            <h2 data-i18n="sec4Title">The Tectum hears danger</h2>
+            <p class="section-text" data-i18n="sec4Text1">Everyone assumed the Tectum was just for vision. Our first major discovery was that <strong>abrupt, danger-signaling sounds activate neurons deep inside the Tectum</strong>. This had never been clearly demonstrated before in zebrafish.</p>
+            <p class="section-text" data-i18n="sec4Text2">Using calcium imaging in live, transparent larvae, we watched neurons glow green as they responded to sudden sounds -- the kind that would signal a predator splashing into the water.</p>
+
+            <!-- Sound toggle interaction -->
+            <div class="interactive-box">
+                <div class="interactive-label" data-i18n="sec4InterLabel">Toggle the stimuli to see how the Tectum responds</div>
+                <div id="tectum-demo" class="tectum-demo-container">
+                    <canvas id="tectum-canvas"></canvas>
+                    <div class="stimulus-toggles">
+                        <button id="toggle-visual" class="stim-btn" data-active="false">
+                            <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+                            <span data-i18n="sec4BtnVis">Vision</span>
+                        </button>
+                        <button id="toggle-audio" class="stim-btn" data-active="false">
+                            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M3,9v6h4l5,5V4L7,9H3z M16.5,12c0-1.77-1.02-3.29-2.5-4.03v8.05C15.48,15.29 16.5,13.77 16.5,12z" fill="currentColor"/></svg>
+                            <span data-i18n="sec4BtnAud">Sound</span>
+                        </button>
+                        <button id="toggle-both" class="stim-btn stim-btn-combined" data-active="false">
+                            <span data-i18n="sec4BtnBoth">Both</span>
+                        </button>
+                    </div>
+                    <div id="tectum-response-label" class="tectum-label"></div>
+                </div>
+                <p class="interactive-caption" data-i18n="sec4Caption">The deep layers of the Tectum respond to abrupt sounds. When combined with visual stimuli, the response is dramatically enhanced.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STRONGER TOGETHER ===== -->
+    <section id="stronger-together" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec5Label">05 / Stronger Together</div>
+            <h2 data-i18n="sec5Title">1 + 1 = 3</h2>
+            <p class="section-text" data-i18n="sec5Text1">Here is where it gets remarkable. When we presented visual and auditory danger signals simultaneously, the brain response was not simply the sum of each individual signal. <strong>The Tectum showed a dramatic multisensory enhancement</strong> -- significantly more neurons were recruited, and they responded more intensely.</p>
+            <p class="section-text" data-i18n="sec5Text2">This enhancement translated directly into behavior: zebrafish were significantly more likely to escape when they received both signals at once compared to either signal alone.</p>
+
+            <!-- Interactive multisensory mixer -->
+            <div class="interactive-box">
+                <div class="interactive-label" data-i18n="sec5InterLabel">Mix the signals and watch the escape probability change</div>
+                <div id="mixer" class="mixer-container">
+                    <div class="mixer-controls">
+                        <div class="mixer-slider-group">
+                            <label data-i18n="sec5SliderV">Visual intensity</label>
+                            <input type="range" id="slider-visual" min="0" max="2" value="0" step="1">
+                            <div class="slider-labels">
+                                <span data-i18n="sec5Off">Off</span>
+                                <span data-i18n="sec5Low">Low</span>
+                                <span data-i18n="sec5High">High</span>
+                            </div>
+                        </div>
+                        <div class="mixer-slider-group">
+                            <label data-i18n="sec5SliderA">Sound intensity</label>
+                            <input type="range" id="slider-audio" min="0" max="2" value="0" step="1">
+                            <div class="slider-labels">
+                                <span data-i18n="sec5Off">Off</span>
+                                <span data-i18n="sec5Low">Low</span>
+                                <span data-i18n="sec5High">High</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mixer-result">
+                        <div class="prob-bar-container">
+                            <div class="prob-label" data-i18n="sec5ProbLabel">Escape probability</div>
+                            <div class="prob-bar-track">
+                                <div id="prob-bar-fill" class="prob-bar-fill"></div>
+                                <span id="prob-bar-value" class="prob-bar-value">7%</span>
+                            </div>
+                            <div id="prob-bar-context" class="prob-bar-context" data-i18n="sec5ProbCtx0">No stimulus (baseline)</div>
+                        </div>
+                        <div id="mixer-enhancement" class="mixer-enhancement hidden">
+                            <span id="enhancement-icon" class="enhancement-icon"></span>
+                            <span id="enhancement-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <figure class="thesis-figure">
+                <img src="figuras/Figura 25.png" alt="Multisensory integration probability matrix" loading="lazy">
+                <figcaption data-i18n="sec5FigCap">Escape probability for each combination of visual (contrast) and auditory (amplitude) stimuli. Combined stimuli consistently outperform either component alone, especially at low intensities.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ===== INVERSE EFFECTIVENESS ===== -->
+    <section id="inverse" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec6Label">06 / A Beautiful Paradox</div>
+            <h2 data-i18n="sec6Title">The weaker the signals, the stronger the boost</h2>
+            <p class="section-text" data-i18n="sec6Text1">One of the most elegant principles of multisensory integration is called <strong>inverse effectiveness</strong>: when individual signals are weak and ambiguous, combining them produces the greatest proportional improvement.</p>
+            <p class="section-text" data-i18n="sec6Text2">Think of it like this: in a quiet room, you can understand speech easily with just hearing. But in a noisy party, seeing the speaker's lips moving suddenly makes a huge difference. That is inverse effectiveness -- and we found it in the zebrafish Tectum.</p>
+
+            <!-- Visual demo of inverse effectiveness -->
+            <div class="interactive-box">
+                <div class="interactive-label" data-i18n="sec6InterLabel">Watch how the multisensory boost changes with stimulus strength</div>
+                <div id="inverse-demo" class="inverse-container">
+                    <div class="inverse-bars">
+                        <div class="inverse-condition">
+                            <div class="bar-group">
+                                <div class="bar-wrapper">
+                                    <div class="inv-bar" id="inv-v-strong" style="--bar-h:45%"><span>V</span></div>
+                                    <div class="inv-bar" id="inv-a-strong" style="--bar-h:70%"><span>A</span></div>
+                                    <div class="inv-bar combined" id="inv-m-strong" style="--bar-h:75%"><span>V+A</span></div>
+                                </div>
+                                <div class="bar-label" data-i18n="sec6Strong">Strong signals</div>
+                                <div class="boost-label" id="boost-strong">+7%</div>
+                            </div>
+                        </div>
+                        <div class="inverse-condition">
+                            <div class="bar-group">
+                                <div class="bar-wrapper">
+                                    <div class="inv-bar" id="inv-v-weak" style="--bar-h:10%"><span>V</span></div>
+                                    <div class="inv-bar" id="inv-a-weak" style="--bar-h:15%"><span>A</span></div>
+                                    <div class="inv-bar combined" id="inv-m-weak" style="--bar-h:33%"><span>V+A</span></div>
+                                </div>
+                                <div class="bar-label" data-i18n="sec6Weak">Weak signals</div>
+                                <div class="boost-label big" id="boost-weak">+120%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="inverse-explanation" data-i18n="sec6Explanation">When each signal alone is barely noticeable, combining them produces a disproportionately large improvement. This is exactly what we observed in both neural activity and escape behavior.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ESCAPE TYPES ===== -->
+    <section id="escape-types" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec7Label">07 / The Escape Menu</div>
+            <h2 data-i18n="sec7Title">Two ways to flee</h2>
+            <p class="section-text" data-i18n="sec7Text1">Zebrafish larvae do not just escape -- they <strong>choose how</strong>. We discovered that two distinct escape behaviors are differentially triggered by the type of sensory signal:</p>
+
+            <div class="escape-types-grid">
+                <div class="escape-card slc-card reveal">
+                    <div class="escape-anim" id="slc-anim"></div>
+                    <h3>SLC</h3>
+                    <p class="escape-subtitle" data-i18n="sec7SLCsub">Short Latency C-start</p>
+                    <ul>
+                        <li data-i18n="sec7SLC1">Triggered mostly by sudden sounds</li>
+                        <li data-i18n="sec7SLC2">Ultra-fast: begins in ~5 ms</li>
+                        <li data-i18n="sec7SLC3">Powered by the giant Mauthner neuron</li>
+                        <li data-i18n="sec7SLC4">Explosive, stereotyped movement</li>
+                    </ul>
+                </div>
+                <div class="escape-card llc-card reveal">
+                    <div class="escape-anim" id="llc-anim"></div>
+                    <h3>LLC</h3>
+                    <p class="escape-subtitle" data-i18n="sec7LLCsub">Long Latency C-start</p>
+                    <ul>
+                        <li data-i18n="sec7LLC1">Triggered mostly by visual looming</li>
+                        <li data-i18n="sec7LLC2">Slower but still fast: ~20-30 ms</li>
+                        <li data-i18n="sec7LLC3">Driven by smaller hindbrain neurons</li>
+                        <li data-i18n="sec7LLC4">More flexible, adaptable movement</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="section-text" data-i18n="sec7Text2">When both signals arrive together, the fish selects its escape type based on which signal is more salient. If the sound is louder, it performs a fast SLC. If the visual loom is more obvious, it opts for a flexible LLC. The brain is not just detecting danger -- it is choosing the best strategy for survival.</p>
+
+            <!-- Escape game -->
+            <div class="interactive-box">
+                <div class="interactive-label" data-i18n="sec7GameLabel">Reaction game: Match the right escape to each stimulus!</div>
+                <div id="escape-game" class="escape-game-container">
+                    <div id="escape-game-area">
+                        <canvas id="escape-game-canvas"></canvas>
+                    </div>
+                    <div id="escape-game-controls">
+                        <button id="escape-btn-slc" class="escape-btn" disabled><span data-i18n="sec7GuessAudio">Sound</span><br><small data-i18n="sec7GuessFast">Fast</small></button>
+                        <button id="escape-btn-llc" class="escape-btn" disabled><span data-i18n="sec7GuessVisual">Visual</span><br><small data-i18n="sec7GuessSlow">Slower</small></button>
+                    </div>
+                    <button id="escape-game-start" class="btn-glow" data-i18n="sec7GameStart">Play</button>
+                    <div id="escape-game-score" class="game-score"></div>
+                    <div id="escape-game-feedback" class="game-feedback"></div>
+                </div>
+            </div>
+
+            <figure class="thesis-figure">
+                <img src="figuras/Figura 20.png" alt="SLC and LLC behavior classification" loading="lazy">
+                <figcaption data-i18n="sec7FigCap">Dimensionality reduction of kinematic features reveals two distinct clusters of escape behaviors: SLC (fast, sound-triggered) and LLC (flexible, vision-triggered). Data from 40 zebrafish larvae.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <!-- ===== THE BIG PICTURE ===== -->
+    <section id="big-picture" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec8Label">08 / The Big Picture</div>
+            <h2 data-i18n="sec8Title">A new model for survival decisions</h2>
+            <p class="section-text" data-i18n="sec8Text1">By linking brain activity to behavior, this thesis proposes a model for how the zebrafish brain transforms sensory signals into life-saving actions:</p>
+
+            <!-- Animated circuit diagram -->
+            <div class="circuit-container">
+                <div id="circuit-diagram" class="circuit-diagram">
+                    <div class="circuit-node" id="cn-eye">
+                        <div class="circuit-icon" id="ci-eye"></div>
+                        <span data-i18n="circEye">Vision</span>
+                    </div>
+                    <div class="circuit-arrow" id="ca-eye"></div>
+                    <div class="circuit-node highlight-node" id="cn-tectum">
+                        <div class="circuit-icon" id="ci-tectum"></div>
+                        <span data-i18n="circTec">Tectum</span>
+                        <div class="circuit-badge" data-i18n="circBadge">Integration</div>
+                    </div>
+                    <div class="circuit-arrow highlight-arrow" id="ca-tectum"></div>
+                    <div class="circuit-node" id="cn-hind">
+                        <div class="circuit-icon" id="ci-hind"></div>
+                        <span data-i18n="circHind">Hindbrain</span>
+                    </div>
+                    <div class="circuit-arrow" id="ca-hind"></div>
+                    <div class="circuit-node" id="cn-escape">
+                        <div class="circuit-icon" id="ci-escape"></div>
+                        <span data-i18n="circEsc">Escape!</span>
+                    </div>
+                    <div class="circuit-arrow vertical-arrow highlight-arrow" id="ca-ear-tectum"></div>
+                    <div class="circuit-arrow vertical-arrow" id="ca-ear-hind"></div>
+                    <div class="circuit-node" id="cn-ear">
+                        <div class="circuit-icon" id="ci-ear"></div>
+                        <span data-i18n="circEar">Hearing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-findings">
+                <h3 data-i18n="sec8FindTitle">Key Findings</h3>
+                <div class="finding reveal">
+                    <div class="finding-number">1</div>
+                    <p data-i18n="sec8Find1">The Tectum is not just visual -- it robustly processes danger-signaling sounds, challenging decades of assumptions.</p>
+                </div>
+                <div class="finding reveal">
+                    <div class="finding-number">2</div>
+                    <p data-i18n="sec8Find2">Combining sight and sound produces a multisensory enhancement in the Tectum, recruiting more neurons with stronger responses.</p>
+                </div>
+                <div class="finding reveal">
+                    <div class="finding-number">3</div>
+                    <p data-i18n="sec8Find3">This enhancement follows inverse effectiveness: weak, ambiguous signals benefit the most from combination.</p>
+                </div>
+                <div class="finding reveal">
+                    <div class="finding-number">4</div>
+                    <p data-i18n="sec8Find4">Tectal integration links directly to hindbrain motor circuits and predicts escape behavior.</p>
+                </div>
+                <div class="finding reveal">
+                    <div class="finding-number">5</div>
+                    <p data-i18n="sec8Find5">Fish choose between fast (SLC) or flexible (LLC) escapes based on which sensory signal dominates -- a form of real-time survival strategy selection.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHY IT MATTERS ===== -->
+    <section id="why-matters" class="section reveal">
+        <div class="section-inner">
+            <div class="section-label" data-i18n="sec9Label">09 / Why It Matters</div>
+            <h2 data-i18n="sec9Title">Beyond the fish tank</h2>
+            <p class="section-text" data-i18n="sec9Text1">The Tectum of zebrafish is homologous to the Superior Colliculus in humans. The same multisensory integration principles discovered here operate in your brain right now, every time you combine what you see and hear to make sense of the world around you.</p>
+            <p class="section-text" data-i18n="sec9Text2">Understanding these circuits at a fundamental level -- neuron by neuron, in an intact living brain -- opens the door to understanding how sensory processing goes wrong in conditions like autism spectrum disorders, where multisensory integration is often altered.</p>
+            <p class="section-text" data-i18n="sec9Text3">This work also pioneered new methods: deep learning for animal tracking, semi-automatic neuron segmentation, and novel analysis pipelines -- tools now being used by other researchers in the lab to tackle new questions.</p>
+            
+            <div class="methods-showcase">
+                <div class="method-card reveal">
+                    <div class="method-icon" id="mi-calcium"></div>
+                    <h4 data-i18n="sec9M1T">In vivo calcium imaging</h4>
+                    <p data-i18n="sec9M1D">Watching hundreds of neurons fire in real time in living larvae</p>
+                </div>
+                <div class="method-card reveal">
+                    <div class="method-icon" id="mi-dl"></div>
+                    <h4 data-i18n="sec9M2T">Deep learning tracking</h4>
+                    <p data-i18n="sec9M2D">Training neural networks to track zebrafish pose at 437 fps</p>
+                </div>
+                <div class="method-card reveal">
+                    <div class="method-icon" id="mi-atlas"></div>
+                    <h4 data-i18n="sec9M3T">Brain atlas alignment</h4>
+                    <p data-i18n="sec9M3D">Mapping every neuron to a standardized brain reference</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="section reveal">
+        <div class="section-inner about-inner">
+            <div class="about-content">
+                <h2 data-i18n="aboutTitle">About this thesis</h2>
+                <p data-i18n="aboutText1">This PhD thesis was conducted at the <strong>SPIN Lab</strong> (Neural Processing and Integration Systems Lab), IFIBYNE (UBA/CONICET), Buenos Aires, Argentina, under the supervision of Dr. Violeta Medan.</p>
+                <p data-i18n="aboutText2">Part of this work was carried out in the laboratory of Dr. German Sumbre at the Ecole Normale Superieure (IBENS), Paris, France.</p>
+                <div class="about-meta">
+                    <p><strong data-i18n="aboutAuthorLabel">Author:</strong> Lic. Nicolas Martorell</p>
+                    <p><strong data-i18n="aboutAdvisorLabel">Advisor:</strong> Dra. Violeta Medan</p>
+                    <p><strong data-i18n="aboutUniLabel">University:</strong> Universidad de Buenos Aires, Facultad de Ciencias Exactas y Naturales</p>
+                    <p><strong data-i18n="aboutYearLabel">Year:</strong> 2025</p>
+                </div>
+            </div>
+            <div class="about-fin">
+                <div class="fin-fish-container">
+                    <canvas id="fin-fish-canvas"></canvas>
+                </div>
+                <p class="fin-text" data-i18n="finText">Thanks for exploring. The zebrafish escapes to swim another day.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Nicolas Martorell &middot; 2025 &middot; Universidad de Buenos Aires</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
