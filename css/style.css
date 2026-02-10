@@ -1353,14 +1353,21 @@ footer {
     .interactive-box { padding: 20px 16px; }
     .mixer-controls { flex-direction: column; gap: 20px; }
     .inverse-bars { flex-direction: column; gap: 30px; }
-    .circuit-diagram {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 12px;
+    .circuit-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
-    .circuit-arrow { display: none; }
-    .circuit-node { min-width: auto; padding: 12px; }
+    .circuit-diagram {
+        grid-template-columns: repeat(7, minmax(70px, auto));
+        gap: 6px 4px;
+        min-width: 560px;
+        padding: 20px 10px;
+    }
+    .circuit-node { min-width: 70px; padding: 10px; }
+    .circuit-arrow { width: 28px; }
+    .circuit-arrow.diagonal-up { width: 60px; }
+    .circuit-arrow.vertical-arrow { height: 32px; }
+    #cn-ear { min-width: 180px; }
     .brain-container { overflow-x: auto; }
     #escape-game-controls { flex-direction: column; align-items: center; }
 }
