@@ -1019,6 +1019,9 @@ body {
     font-size: 0.85rem;
     color: var(--text);
     font-weight: 600;
+    line-height: 1.15;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .circuit-node.highlight-node {
@@ -1031,11 +1034,13 @@ body {
     font-size: 0.65rem;
     font-family: var(--font-mono);
     color: var(--gfp);
-    background: rgba(0, 255, 65, 0.1);
-    padding: 2px 8px;
+    background: rgba(0, 255, 65, 0.16);
+    padding: 3px 8px;
     border-radius: 4px;
     letter-spacing: 1px;
     text-transform: uppercase;
+    border: 1px solid rgba(0, 255, 65, 0.25);
+    box-shadow: 0 0 6px rgba(0, 255, 65, 0.15);
 }
 
 .circuit-icon {
@@ -1369,6 +1374,7 @@ footer {
     .circuit-node span {
         font-size: 0.72rem;
     }
+    #cn-hind span { font-size: 0.68rem; }
     .circuit-icon { width: 28px; height: 28px; }
     .circuit-arrow { width: 18px; }
     .circuit-arrow::after { right: -2px; top: -4px; border-left-width: 6px; }
