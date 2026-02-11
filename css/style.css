@@ -1062,6 +1062,7 @@ body {
     height: 2px;
     background: var(--gfp-dim);
     position: relative;
+    justify-self: center;
 }
 
 .circuit-arrow::after {
@@ -1360,27 +1361,30 @@ footer {
     .inverse-bars { flex-direction: column; gap: 30px; }
     .circuit-container {
         overflow-x: hidden;
+        margin: 24px -8px;
     }
     .circuit-diagram {
-        grid-template-columns: repeat(7, minmax(32px, 1fr));
-        gap: 6px 4px;
+        grid-template-columns: minmax(72px, 1fr) 28px minmax(72px, 1fr) 28px minmax(72px, 1fr) 28px minmax(72px, 1fr);
+        gap: 8px 6px;
         max-width: 100%;
-        padding: 16px 6px;
+        padding: 12px 8px;
     }
     .circuit-node {
         min-width: 0;
-        padding: 8px 6px;
+        padding: 8px;
     }
     .circuit-node span {
         font-size: 0.72rem;
+        word-break: normal;
+        hyphens: none;
     }
     #cn-hind span { font-size: 0.68rem; }
     .circuit-icon { width: 28px; height: 28px; }
-    .circuit-arrow { width: 18px; }
+    .circuit-arrow { width: 24px; }
     .circuit-arrow::after { right: -2px; top: -4px; border-left-width: 6px; }
-    .circuit-arrow.diagonal-up { width: 40px; transform: translateY(-6px) rotate(-24deg); }
+    .circuit-arrow.diagonal-up { width: 44px; transform: translateY(-6px) rotate(-24deg); }
     .circuit-arrow.vertical-arrow { height: 24px; }
-    #cn-ear { min-width: 0; }
+    #cn-ear { min-width: 0; grid-column: 2 / span 5; }
     .brain-container { overflow-x: auto; }
     #escape-game-controls { flex-direction: column; align-items: center; }
 }
