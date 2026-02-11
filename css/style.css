@@ -1354,20 +1354,27 @@ footer {
     .mixer-controls { flex-direction: column; gap: 20px; }
     .inverse-bars { flex-direction: column; gap: 30px; }
     .circuit-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
     }
     .circuit-diagram {
-        grid-template-columns: repeat(7, minmax(70px, auto));
+        grid-template-columns: repeat(7, minmax(32px, 1fr));
         gap: 6px 4px;
-        min-width: 560px;
-        padding: 20px 10px;
+        max-width: 100%;
+        padding: 16px 6px;
     }
-    .circuit-node { min-width: 70px; padding: 10px; }
-    .circuit-arrow { width: 28px; }
-    .circuit-arrow.diagonal-up { width: 60px; }
-    .circuit-arrow.vertical-arrow { height: 32px; }
-    #cn-ear { min-width: 180px; }
+    .circuit-node {
+        min-width: 0;
+        padding: 8px 6px;
+    }
+    .circuit-node span {
+        font-size: 0.72rem;
+    }
+    .circuit-icon { width: 28px; height: 28px; }
+    .circuit-arrow { width: 18px; }
+    .circuit-arrow::after { right: -2px; top: -4px; border-left-width: 6px; }
+    .circuit-arrow.diagonal-up { width: 40px; transform: translateY(-6px) rotate(-24deg); }
+    .circuit-arrow.vertical-arrow { height: 24px; }
+    #cn-ear { min-width: 0; }
     .brain-container { overflow-x: auto; }
     #escape-game-controls { flex-direction: column; align-items: center; }
 }
